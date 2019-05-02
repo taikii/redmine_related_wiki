@@ -1,0 +1,23 @@
+<%
+wikipages = []
+if @issue
+  if Redmine::Plugin.installed?(:redmine_tags)
+    @issue.tags.collect { |t| wikipages << @issue.project.name + ':' + t.name }
+  end
+elsif @issues
+  @issues.collect do |issue|
+    if Redmine::Plugin.installed?(:redmine_tags)
+      issue.tags.collect do |t|
+        if !Wiki.find_page(t.name, :project => issue.project).nil?
+          wikipages << issue.project.name + ':' + t.name
+        end
+      end
+    end
+  end
+end
+wikipages.sort!.uniq!
+%>
+<% if !wikipages.empty? %>
+<h3><%= l :related_wiki %></h3>
+<%= content_tag(:div, textilizable(wikipages.collect{ |t| "[[#{t}]]" }.join(', '), :headings => false), :class => 'related_wiki') %>
+<% end %>
