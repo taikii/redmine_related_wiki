@@ -2,14 +2,14 @@
 wikipages = []
 if @issue
   if Redmine::Plugin.installed?(:redmine_tags)
-    @issue.tags.collect { |t| wikipages << @issue.project.name + ':' + t.name }
+    @issue.tags.collect { |t| wikipages << @issue.project.name + ':' + t.name.sub(/.*:/, '') }
   end
 elsif @issues
   @issues.collect do |issue|
     if Redmine::Plugin.installed?(:redmine_tags)
       issue.tags.collect do |t|
-        if !Wiki.find_page(t.name, :project => issue.project).nil?
-          wikipages << issue.project.name + ':' + t.name
+        if !Wiki.find_page(t.name.sub(/.*:/, ''), :project => issue.project).nil?
+          wikipages << issue.project.name + ':' + t.name.sub(/.*:/, '')
         end
       end
     end
