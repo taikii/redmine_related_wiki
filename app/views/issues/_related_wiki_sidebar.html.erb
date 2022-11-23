@@ -1,15 +1,15 @@
 <%
 wikipages = []
 if @issue
-  if Redmine::Plugin.installed?(:redmine_tags)
-    @issue.tags.collect { |t| wikipages << @issue.project.name + ':' + t.name.sub(/.*:/, '') }
+  if Redmine::Plugin.installed?(:redmine_tags) || Redmine::Plugin.installed?(:additional_tags)
+    @issue.tags.collect { |t| wikipages << @issue.project.name + ':' + t.name.sub(/.*:/, '').strip }
   end
 elsif @issues
   @issues.collect do |issue|
-    if Redmine::Plugin.installed?(:redmine_tags)
+    if Redmine::Plugin.installed?(:redmine_tags) || Redmine::Plugin.installed?(:additional_tags)
       issue.tags.collect do |t|
-        if !Wiki.find_page(t.name.sub(/.*:/, ''), :project => issue.project).nil?
-          wikipages << issue.project.name + ':' + t.name.sub(/.*:/, '')
+        if !Wiki.find_page(t.name.sub(/.*:/, '').strip, :project => issue.project).nil?
+          wikipages << issue.project.name + ':' + t.name.sub(/.*:/, '').strip
         end
       end
     end
