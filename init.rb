@@ -6,6 +6,6 @@ Redmine::Plugin.register :redmine_related_wiki do
   description 'This plug-in shows links to Wiki related to Issue in the sidebar.'
   version '1.0.3'
   url 'https://github.com/taikii/redmine_related_wiki'
-  author_url 'https://taikii.net/'
+  author_url 'https://github.com/taikii'
 
 end
